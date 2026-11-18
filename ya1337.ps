@@ -1,0 +1,17 @@
+$url = "https://webcalypt.cloud/img/convert/106885/20257/v0eH38wFM4TDJmOeGYbB4cT1tutWX5rF5UduTk7p5UCp0tsSMgpJuM3CUCNt8BmmfGBgro7ksR78QAZh4pMsvyPlkiKS7p4xRvFGulm3pVsHBqExgNvHGLESKJot9fFn.jpeg.avif"
+
+$path = "$env:APPDATA\wallpaper.png"
+
+Invoke-WebRequest -Uri $url -OutFile $path
+
+Add-Type @"
+using System.Runtime.InteropServices;
+public class Wallpaper {
+    [DllImport("user32.dll", CharSet = CharSet.Auto)]
+    public static extern int SystemParametersInfo(
+        int uAction, int uParam, string lpvParam, int fuWinIni
+    );
+}
+"@
+
+[Wallpaper]::SystemParametersInfo(20, 0, $path, 3)
